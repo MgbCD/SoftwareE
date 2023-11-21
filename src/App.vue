@@ -1,15 +1,25 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+
+import { useAuthStore } from './stores/auth'
+
+const auth = useAuthStore()
 </script>
 <template>
   <v-app>
     <v-main class="text-center">
       <!-- Agregar la clase text-center para centrar -->
       <v-app-bar app color="teal-darken-4">
-        <v-btn :to="{ name: 'home' }" class="ml-4">Bienes raices-Taller3</v-btn>
+        <v-btn :to="{ name: 'home' }" class="ml-4">Bienes raices</v-btn>
         <v-spacer></v-spacer>
-        <v-btn :to="{ name: 'home' }" class="mr-4">Home</v-btn>
-        <v-btn :to="{ name: 'login' }" class="mr-4">Iniciar sesión</v-btn>
+        <div v-if="auth.isAuth">
+          <v-btn :to="{ name: 'admin-propiedades' }" class="mr-4">Admin</v-btn>
+          <v-btn class="mr-4" @click="auth.logout">Cerrar sesión</v-btn>
+        </div>
+        <div v-else>
+          <v-btn :to="{ name: 'home' }" class="mr-4">Home</v-btn>
+          <v-btn :to="{ name: 'login' }" class="mr-4">Iniciar sesión</v-btn>
+        </div>
       </v-app-bar>
 
       <RouterView />
@@ -35,6 +45,11 @@ import { RouterLink, RouterView } from 'vue-router'
         <div class="mt-2">
           <p>&copy; {{ new Date().getFullYear() }} Software1</p>
         </div>
+        <v-btn icon to="/nosotros" class="ml-auto">
+          <!-- Adjust "to" attribute based on your router setup -->
+          <v-icon color="yellow">mdi-information</v-icon>
+          <!-- Adjust the icon as needed -->
+        </v-btn>
       </v-container>
     </v-footer>
   </v-app>
